@@ -32,22 +32,22 @@ protected:
 	virtual void BeginPlay() override;
 	//~ End AActor Interface
 
-	UPROPERTY( EditAnywhere, BlueprintReadWrite )
+	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
 	TObjectPtr<USphereComponent> CollisionSphere;
 
-	UPROPERTY( EditAnywhere, BlueprintReadWrite )
+	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
 	TObjectPtr<USpringArmComponent> SpringArm;
 
-	UPROPERTY( EditAnywhere, BlueprintReadWrite )
+	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
 	TObjectPtr<UCameraComponent> Camera;
 	
-	UPROPERTY( EditAnywhere, BlueprintReadWrite )
+	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
 	TObjectPtr<UStaticMeshComponent> MeshHead;
 
-	UPROPERTY( EditAnywhere, BlueprintReadWrite )
+	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
 	TObjectPtr<UStaticMeshComponent> MeshEyeR;
 
-	UPROPERTY( EditAnywhere, BlueprintReadWrite )
+	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
 	TObjectPtr<UStaticMeshComponent> MeshEyeL;
 
 private:
