@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "SnakeAssignment/Definitions.h"
 #include "SnakePawn2.generated.h"
 
 class USphereComponent;
@@ -17,21 +18,44 @@ public:
 	// Sets default values for this pawn's properties
 	ASnakePawn2();
 
-	UPROPERTY(VisibleAnywhere)
+	// Called every frame
+	virtual void Tick( float DeltaTime ) override;
+
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent( UInputComponent* PlayerInputComponent ) override;
+
+	UPROPERTY( VisibleAnywhere )
 	TObjectPtr<USceneComponent> SceneComponent;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY( VisibleAnywhere )
 	TObjectPtr<USphereComponent> CollisionComponent;
-	
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+private:
+	UFUNCTION( BlueprintCallable )
+	void Jump();
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+	UFUNCTION( BlueprintCallable )
+	void SetNextDirection( ESnakeDirection NewDirection );
 
+	UFUNCTION()
+	void UpdateDirection();
+
+	UPROPERTY( VisibleAnywhere )
+	float VelocityZ = 0.f;
+
+	UPROPERTY( VisibleAnywhere )
+	bool bInAir = false;
+
+	UPROPERTY( VisibleAnywhere )
+	ESnakeDirection Direction = ESnakeDirection::None;
+
+	UPROPERTY( EditAnywhere )
+	float Speed = 100.f;
+
+	UPROPERTY()
+	TArray<ESnakeDirection> DirectionsQueue;
 };
