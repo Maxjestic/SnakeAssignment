@@ -24,6 +24,15 @@ void ASnakePawn2::BeginPlay()
 	Super::BeginPlay();
 }
 
+// Called every frame
+void ASnakePawn2::Tick( float DeltaTime )
+{
+	Super::Tick( DeltaTime );
+
+	UpdateFalling( DeltaTime );
+	UpdateMovement( DeltaTime );
+}
+
 void ASnakePawn2::Jump()
 {
 	if ( !bInAir )
@@ -46,20 +55,20 @@ void ASnakePawn2::UpdateDirection()
 
 	Direction = DirectionsQueue[0];
 	DirectionsQueue.RemoveAt( 0 );
-	
+
 	switch ( Direction )
 	{
 	case ESnakeDirection::Up:
-		CollisionComponent->SetRelativeRotation(FRotator(0.f, 0.f, 0.f));
+		CollisionComponent->SetRelativeRotation( FRotator( 0.f, 0.f, 0.f ) );
 		break;
 	case ESnakeDirection::Down:
-		CollisionComponent->SetRelativeRotation(FRotator(0.f, 180.f, 0.f));
+		CollisionComponent->SetRelativeRotation( FRotator( 0.f, 180.f, 0.f ) );
 		break;
 	case ESnakeDirection::Left:
-		CollisionComponent->SetRelativeRotation(FRotator(0.f, 270.f, 0.f));
+		CollisionComponent->SetRelativeRotation( FRotator( 0.f, 270.f, 0.f ) );
 		break;
 	case ESnakeDirection::Right:
-		CollisionComponent->SetRelativeRotation(FRotator(0.f, 90.f, 0.f));
+		CollisionComponent->SetRelativeRotation( FRotator( 0.f, 90.f, 0.f ) );
 		break;
 	case ESnakeDirection::None:
 		break;
@@ -67,11 +76,58 @@ void ASnakePawn2::UpdateDirection()
 	}
 }
 
-// Called every frame
-void ASnakePawn2::Tick( float DeltaTime )
+void ASnakePawn2::UpdateMovement( const float DeltaTime )
 {
-	Super::Tick( DeltaTime );
+	float TotalMoveDistance = Speed * DeltaTime;
+	float MoveDistance = TotalMoveDistance;
 
+	while (MovedTileDistance + MoveDistance >= TileSize)
+	{
+		MoveDistance = TileSize - MovedTileDistance;
+		MoveSnake( MoveDistance );
+
+		UpdateDirection();
+		
+		TotalMoveDistance -= MoveDistance;
+		MoveDistance = TotalMoveDistance;
+		MovedTileDistance -= TileSize;
+	}
+
+	if (MoveDistance > 0.f)
+	{
+		MoveSnake( MoveDistance );
+	}
+}
+
+void ASnakePawn2::MoveSnake( float Distance )
+{
+	FVector Position = GetActorLocation();
+	switch ( Direction )
+	{
+	case ESnakeDirection::Up:
+		Position.X += Distance;
+		break;
+	case ESnakeDirection::Down:
+		Position.X -= Distance;
+		break;
+	case ESnakeDirection::Left:
+		Position.Y -= Distance;
+		break;
+	case ESnakeDirection::Right:
+		Position.Y += Distance;
+		break;
+	case ESnakeDirection::None:
+	default:
+		break;
+	}
+	
+	SetActorLocation( Position );
+
+	MovedTileDistance += Distance;
+}
+
+void ASnakePawn2::UpdateFalling( const float DeltaTime )
+{
 	FVector Position = GetActorLocation();
 
 	VelocityZ -= 10.f * DeltaTime;
@@ -94,27 +150,7 @@ void ASnakePawn2::Tick( float DeltaTime )
 		bInAir = true;
 	}
 
-	switch ( Direction )
-	{
-		case ESnakeDirection::Up:
-		Position.X += Speed * DeltaTime;
-			break;
-		case ESnakeDirection::Down:
-		Position.X -= Speed * DeltaTime;
-			break;
-		case ESnakeDirection::Left:
-		Position.Y -= Speed * DeltaTime;
-			break;
-		case ESnakeDirection::Right:
-		Position.Y += Speed * DeltaTime;
-			break;
-		case ESnakeDirection::None:
-		default:
-			break;
-	}
-
 	SetActorLocation( Position );
-	UpdateDirection();
 }
 
 // Called to bind functionality to input

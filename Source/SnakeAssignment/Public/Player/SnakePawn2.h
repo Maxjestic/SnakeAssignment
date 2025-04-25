@@ -44,6 +44,15 @@ private:
 	UFUNCTION()
 	void UpdateDirection();
 
+	UFUNCTION()
+	void UpdateMovement( const float DeltaTime );
+
+	UFUNCTION()
+	void MoveSnake( float Distance );
+
+	UFUNCTION()
+	void UpdateFalling( const float DeltaTime );
+
 	UPROPERTY( VisibleAnywhere )
 	float VelocityZ = 0.f;
 
@@ -53,8 +62,11 @@ private:
 	UPROPERTY( VisibleAnywhere )
 	ESnakeDirection Direction = ESnakeDirection::None;
 
-	UPROPERTY( EditAnywhere )
-	float Speed = 100.f;
+	UPROPERTY()
+	float MovedTileDistance = 0.f;
+
+	UPROPERTY( EditAnywhere, meta=(ToolTip = "Speed of the snake in cm/s") )
+	float Speed = 500.f;
 
 	UPROPERTY()
 	TArray<ESnakeDirection> DirectionsQueue;
