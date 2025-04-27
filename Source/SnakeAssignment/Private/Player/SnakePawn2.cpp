@@ -59,16 +59,16 @@ void ASnakePawn2::UpdateDirection()
 	switch ( Direction )
 	{
 	case ESnakeDirection::Up:
-		CollisionComponent->SetRelativeRotation( FRotator( 0.f, 0.f, 0.f ) );
+		ForwardRotation = FRotator( 0.f, 0.f, 0.f );
 		break;
 	case ESnakeDirection::Down:
-		CollisionComponent->SetRelativeRotation( FRotator( 0.f, 180.f, 0.f ) );
+		ForwardRotation = FRotator( 0.f, 180.f, 0.f );
 		break;
 	case ESnakeDirection::Left:
-		CollisionComponent->SetRelativeRotation( FRotator( 0.f, 270.f, 0.f ) );
+		ForwardRotation = FRotator( 0.f, 270.f, 0.f );
 		break;
 	case ESnakeDirection::Right:
-		CollisionComponent->SetRelativeRotation( FRotator( 0.f, 90.f, 0.f ) );
+		ForwardRotation = FRotator( 0.f, 90.f, 0.f );
 		break;
 	case ESnakeDirection::None:
 		break;

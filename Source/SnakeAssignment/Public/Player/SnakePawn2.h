@@ -27,12 +27,15 @@ public:
 	UPROPERTY( VisibleAnywhere )
 	TObjectPtr<USceneComponent> SceneComponent;
 
-	UPROPERTY( VisibleAnywhere )
+	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
 	TObjectPtr<USphereComponent> CollisionComponent;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY( BlueprintReadWrite )
+	FRotator ForwardRotation = FRotator::ZeroRotator;
 
 private:
 	UFUNCTION( BlueprintCallable )
