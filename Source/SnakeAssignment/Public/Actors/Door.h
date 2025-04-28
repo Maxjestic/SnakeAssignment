@@ -4,39 +4,35 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "SnakeWorld.generated.h"
+#include "Door.generated.h"
+
+class UBoxComponent;
 
 UCLASS()
-class SNAKEASSIGNMENT_API ASnakeWorld : public AActor
+class SNAKEASSIGNMENT_API ADoor : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	ASnakeWorld();
-
+	ADoor();
+	
 	// Called every frame
 	virtual void Tick( float DeltaTime ) override;
-
-	virtual void OnConstruction(const FTransform& Transform) override;
 
 	UPROPERTY( VisibleAnywhere )
 	TObjectPtr<USceneComponent> SceneComponent;
 
-	UPROPERTY( VisibleAnywhere )
-	TObjectPtr<UInstancedStaticMeshComponent> WallMeshInstances;
+	UPROPERTY( EditAnywhere )
+	TObjectPtr<UBoxComponent> CollisionBox;
 
-	UPROPERTY( VisibleAnywhere )
-	TObjectPtr<UInstancedStaticMeshComponent> FloorMeshInstances;
-
-	UPROPERTY( EditDefaultsOnly )
-	TSubclassOf<AActor> DoorActor;
+	UFUNCTION()
+	void OnBoxBeginOverlap( UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	                        int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult );
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-private:
-	UPROPERTY()
-	TArray<AActor*> Actors;
+public:
 };
