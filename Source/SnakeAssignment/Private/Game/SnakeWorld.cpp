@@ -2,6 +2,7 @@
 
 #include "Game/SnakeWorld.h"
 #include "Components/InstancedStaticMeshComponent.h"
+#include "GameFramework/PlayerStart.h"
 #include "Player/SnakePawn.h"
 #include "SnakeAssignment/Definitions.h"
 #include "StructUtils/PropertyBag.h"
@@ -40,7 +41,7 @@ void ASnakeWorld::OnConstruction( const FTransform& Transform )
 
 	WallMeshInstances->ClearInstances();
 	FloorMeshInstances->ClearInstances();
-	for ( auto Actor : Actors )
+	for ( AActor* Actor : Actors )
 	{
 		Actor->Destroy();
 	}
@@ -60,7 +61,7 @@ void ASnakeWorld::OnConstruction( const FTransform& Transform )
 		for ( int x = 0; x < Line.Len(); x++ )
 		{
 			FTransform Offset = FTransform( FRotator::ZeroRotator,
-			                                FVector( (Lines.Num() - y) * 100.f, x * 100.f, 0.f ) );
+			                                FVector( -y * 100.f, x * 100.f, 0.f ) );
 
 			switch ( Line[x] )
 			{
@@ -74,7 +75,7 @@ void ASnakeWorld::OnConstruction( const FTransform& Transform )
 				FloorMeshInstances->AddInstance( Offset );
 				if ( IsValid( DoorActor ) )
 				{
-					if ( AActor* Actor = GetWorld()->SpawnActor<AActor>( DoorActor, Offset ); IsValid( Actor ) )
+					if ( AActor* Actor = GetWorld()->SpawnActor<AActor>( DoorActor, Offset ) )
 					{
 						Actor->SetActorLabel( DoorActor->GetName() );
 						Actor->AttachToActor( this, FAttachmentTransformRules::KeepRelativeTransform );
