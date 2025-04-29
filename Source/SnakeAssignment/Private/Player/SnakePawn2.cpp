@@ -22,6 +22,8 @@ ASnakePawn2::ASnakePawn2()
 void ASnakePawn2::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GEngine->AddOnScreenDebugMessage( -1, 5.f, FColor::Red, TEXT( "Hello World" ) );
 }
 
 // Called every frame

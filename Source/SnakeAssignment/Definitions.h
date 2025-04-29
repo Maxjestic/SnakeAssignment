@@ -1,8 +1,6 @@
-﻿
+﻿#pragma once
 
-#pragma once
-
-UENUM(BlueprintType)
+UENUM( BlueprintType )
 enum class ESnakeDirection : uint8
 {
 	Up,
