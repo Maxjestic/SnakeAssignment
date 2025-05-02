@@ -3,10 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Game/SnakePlayerState.h"
 #include "GameFramework/Pawn.h"
 #include "SnakeAssignment/Definitions.h"
 #include "SnakePawn2.generated.h"
 
+class ASnakePlayerState;
+class ASnakeBodyPart;
 class USphereComponent;
 
 UCLASS()
@@ -24,11 +27,18 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent( UInputComponent* PlayerInputComponent ) override;
 
+	virtual void PossessedBy( AController* NewController ) override;
+
 	UPROPERTY( VisibleAnywhere )
 	TObjectPtr<USceneComponent> SceneComponent;
 
 	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
 	TObjectPtr<USphereComponent> CollisionComponent;
+
+	UPROPERTY( EditDefaultsOnly )
+	TSubclassOf<ASnakeBodyPart> SnakeBodyPartClass;
+
+	FORCEINLINE float GetSnakeSpeed() const { return SnakePlayerState->GetSnakeSpeed(); }
 
 protected:
 	// Called when the game starts or when spawned
@@ -56,6 +66,9 @@ private:
 	UFUNCTION()
 	void UpdateFalling( const float DeltaTime );
 
+	UFUNCTION()
+	void AteApple();
+
 	UPROPERTY( VisibleAnywhere )
 	float VelocityZ = 0.f;
 
@@ -68,9 +81,14 @@ private:
 	UPROPERTY()
 	float MovedTileDistance = 0.f;
 
-	UPROPERTY( EditAnywhere, meta=(ToolTip = "Speed of the snake in cm/s") )
-	float Speed = 500.f;
-
 	UPROPERTY()
 	TArray<ESnakeDirection> DirectionsQueue;
+
+	int TmpMovementMade = 0;
+
+	UPROPERTY()
+	TObjectPtr<ASnakeBodyPart> ChildBodyPart;
+
+	UPROPERTY()
+	TObjectPtr<ASnakePlayerState> SnakePlayerState;
 };

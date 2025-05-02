@@ -4,11 +4,12 @@
 #include "Player/SnakeBodyPart.h"
 
 #include "Components/SphereComponent.h"
+#include "Player/SnakePawn2.h"
 
 // Sets default values
 ASnakeBodyPart::ASnakeBodyPart()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	SceneComponent = CreateDefaultSubobject<USceneComponent>( TEXT( "SceneComponent" ) );
@@ -22,13 +23,45 @@ ASnakeBodyPart::ASnakeBodyPart()
 void ASnakeBodyPart::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	SnakeOwner = GetOwner<ASnakePawn2>();
 }
 
 // Called every frame
-void ASnakeBodyPart::Tick(float DeltaTime)
+void ASnakeBodyPart::Tick( float DeltaTime )
 {
-	Super::Tick(DeltaTime);
+	Super::Tick( DeltaTime );
 
+	const float Speed = SnakeOwner->GetSnakeSpeed();
+
+	if ( NextPosition != FVector::ZeroVector )
+	{
+		FVector Position = GetActorLocation();
+		const FVector Forward = (NextPosition - Position).GetSafeNormal();
+		Position += Forward * Speed * DeltaTime;
+		SetActorLocation( Position );
+	}
 }
 
+void ASnakeBodyPart::AddChildBodyPart( ASnakeBodyPart* InChildBodyPart )
+{
+	if ( IsValid( ChildBodyPart ) )
+	{
+		ChildBodyPart->AddChildBodyPart( InChildBodyPart );
+	}
+	else
+	{
+		ChildBodyPart = InChildBodyPart;
+		ChildBodyPart->SetActorLocation( GetActorLocation() );
+	}
+}
+
+void ASnakeBodyPart::SetNextPosition( const FVector& InPosition )
+{
+	if ( IsValid( ChildBodyPart ) )
+	{
+		ChildBodyPart->SetNextPosition( NextPosition );
+	}
+
+	NextPosition = InPosition;
+}

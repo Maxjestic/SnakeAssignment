@@ -4,6 +4,8 @@
 #include "Player/SnakePawn2.h"
 
 #include "Components/SphereComponent.h"
+#include "Game/SnakePlayerState.h"
+#include "Player/SnakeBodyPart.h"
 
 // Sets default values
 ASnakePawn2::ASnakePawn2()
@@ -33,6 +35,20 @@ void ASnakePawn2::Tick( float DeltaTime )
 
 	UpdateFalling( DeltaTime );
 	UpdateMovement( DeltaTime );
+}
+
+// Called to bind functionality to input
+void ASnakePawn2::SetupPlayerInputComponent( UInputComponent* PlayerInputComponent )
+{
+	Super::SetupPlayerInputComponent( PlayerInputComponent );
+}
+
+void ASnakePawn2::PossessedBy( AController* NewController )
+{
+	Super::PossessedBy( NewController );
+
+	SnakePlayerState = GetPlayerState<ASnakePlayerState>();
+	check( SnakePlayerState );
 }
 
 void ASnakePawn2::Jump()
@@ -80,22 +96,38 @@ void ASnakePawn2::UpdateDirection()
 
 void ASnakePawn2::UpdateMovement( const float DeltaTime )
 {
+	const float Speed = SnakePlayerState->GetSnakeSpeed();
 	float TotalMoveDistance = Speed * DeltaTime;
 	float MoveDistance = TotalMoveDistance;
 
-	while (MovedTileDistance + MoveDistance >= TileSize)
+	while ( MovedTileDistance + MoveDistance >= TileSize )
 	{
 		MoveDistance = TileSize - MovedTileDistance;
 		MoveSnake( MoveDistance );
 
 		UpdateDirection();
-		
+
 		TotalMoveDistance -= MoveDistance;
 		MoveDistance = TotalMoveDistance;
 		MovedTileDistance -= TileSize;
+
+		if ( IsValid( ChildBodyPart ) )
+		{
+			ChildBodyPart->SetNextPosition( GetActorLocation() );
+		}
+
+		if ( Direction != ESnakeDirection::None )
+		{
+			TmpMovementMade++;
+			if ( TmpMovementMade >= 5 )
+			{
+				AteApple();
+				TmpMovementMade = 0;
+			}
+		}
 	}
 
-	if (MoveDistance > 0.f)
+	if ( MoveDistance > 0.f )
 	{
 		MoveSnake( MoveDistance );
 	}
@@ -122,7 +154,7 @@ void ASnakePawn2::MoveSnake( float Distance )
 	default:
 		break;
 	}
-	
+
 	SetActorLocation( Position );
 
 	MovedTileDistance += Distance;
@@ -155,8 +187,21 @@ void ASnakePawn2::UpdateFalling( const float DeltaTime )
 	SetActorLocation( Position );
 }
 
-// Called to bind functionality to input
-void ASnakePawn2::SetupPlayerInputComponent( UInputComponent* PlayerInputComponent )
+void ASnakePawn2::AteApple()
 {
-	Super::SetupPlayerInputComponent( PlayerInputComponent );
+	UE_LOG( LogTemp, Log, TEXT( "Ate apple" ) );
+
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.Owner = this;
+
+	ASnakeBodyPart* SnakeBodyPart = GetWorld()->SpawnActor<ASnakeBodyPart>( SnakeBodyPartClass, GetActorLocation(),
+	                                                                        GetActorRotation(), SpawnParameters );
+	if ( IsValid( ChildBodyPart ) )
+	{
+		ChildBodyPart->AddChildBodyPart( SnakeBodyPart );
+	}
+	else
+	{
+		ChildBodyPart = SnakeBodyPart;
+	}
 }
