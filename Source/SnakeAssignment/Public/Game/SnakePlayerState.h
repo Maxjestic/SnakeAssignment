@@ -14,11 +14,19 @@ class SNAKEASSIGNMENT_API ASnakePlayerState : public APlayerState
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	UFUNCTION()
 	FORCEINLINE float GetSnakeSpeed() const { return SnakeSpeed; }
+
+	UFUNCTION()
+	void IncreaseSnakeSpeed( const float ExtraSpeed );
+
+	UFUNCTION()
+	FORCEINLINE void AppleEaten();
 
 protected:
 	UPROPERTY( EditAnywhere )
 	float SnakeSpeed = 500.f;
+
+	int ApplesEaten = 0;
 };

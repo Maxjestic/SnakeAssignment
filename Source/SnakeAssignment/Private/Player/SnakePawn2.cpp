@@ -4,7 +4,9 @@
 #include "Player/SnakePawn2.h"
 
 #include "Components/SphereComponent.h"
+#include "Game/SnakeGameMode.h"
 #include "Game/SnakePlayerState.h"
+#include "Kismet/GameplayStatics.h"
 #include "Player/SnakeBodyPart.h"
 
 // Sets default values
@@ -24,8 +26,6 @@ ASnakePawn2::ASnakePawn2()
 void ASnakePawn2::BeginPlay()
 {
 	Super::BeginPlay();
-
-	GEngine->AddOnScreenDebugMessage( -1, 5.f, FColor::Red, TEXT( "Hello World" ) );
 }
 
 // Called every frame
@@ -193,9 +193,12 @@ void ASnakePawn2::AteApple()
 
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.Owner = this;
+	SpawnParameters.Instigator = this;
 
-	ASnakeBodyPart* SnakeBodyPart = GetWorld()->SpawnActor<ASnakeBodyPart>( SnakeBodyPartClass, GetActorLocation(),
-	                                                                        GetActorRotation(), SpawnParameters );
+	ASnakeBodyPart* SnakeBodyPart = GetWorld()->SpawnActor<ASnakeBodyPart>( SnakeBodyPartClass,
+	                                                                        GetActorLocation(),
+	                                                                        GetActorRotation(),
+	                                                                        SpawnParameters );
 	if ( IsValid( ChildBodyPart ) )
 	{
 		ChildBodyPart->AddChildBodyPart( SnakeBodyPart );
@@ -204,4 +207,6 @@ void ASnakePawn2::AteApple()
 	{
 		ChildBodyPart = SnakeBodyPart;
 	}
+
+	SnakePlayerState->AppleEaten();
 }

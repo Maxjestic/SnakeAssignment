@@ -25,17 +25,17 @@ void ASnakeBodyPart::BeginPlay()
 	Super::BeginPlay();
 
 	SnakeOwner = GetOwner<ASnakePawn2>();
+	check( SnakeOwner );
 }
 
 // Called every frame
 void ASnakeBodyPart::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-
-	const float Speed = SnakeOwner->GetSnakeSpeed();
-
+	
 	if ( NextPosition != FVector::ZeroVector )
 	{
+		const float Speed = SnakeOwner->GetSnakeSpeed();
 		FVector Position = GetActorLocation();
 		const FVector Forward = (NextPosition - Position).GetSafeNormal();
 		Position += Forward * Speed * DeltaTime;

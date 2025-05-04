@@ -3,3 +3,20 @@
 
 #include "Game/SnakePlayerState.h"
 
+#include "Game/SnakeGameMode.h"
+#include "Kismet/GameplayStatics.h"
+
+void ASnakePlayerState::IncreaseSnakeSpeed( const float ExtraSpeed )
+{
+	SnakeSpeed += ExtraSpeed;
+}
+
+void ASnakePlayerState::AppleEaten()
+{
+	ApplesEaten++;	
+
+	if ( const ASnakeGameMode* GameMode = Cast<ASnakeGameMode>( UGameplayStatics::GetGameMode( GetWorld() ) ))
+	{
+		GameMode->AppleEaten(this);
+	}
+}
