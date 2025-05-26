@@ -14,7 +14,8 @@ enum class EGameState : uint8
 	Intro,
 	Play,
 	Pause,
-	Outro
+	Outro,
+	Quit
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams( FOnGameStateChanged, EGameState, OldGameState, EGameState, NewGameState );

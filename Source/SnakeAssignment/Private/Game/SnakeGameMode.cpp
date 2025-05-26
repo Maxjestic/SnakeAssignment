@@ -7,5 +7,5 @@
 
 void ASnakeGameMode::AppleEaten( ASnakePlayerState* SnakePlayerState ) const
 {
-	SnakePlayerState->IncreaseSnakeSpeed( 100.f );
+	SnakePlayerState->IncreaseSnakeSpeed( 5.f );
 }

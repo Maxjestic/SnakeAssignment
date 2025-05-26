@@ -4,9 +4,7 @@
 #include "Player/SnakePawn2.h"
 
 #include "Components/SphereComponent.h"
-#include "Game/SnakeGameMode.h"
 #include "Game/SnakePlayerState.h"
-#include "Kismet/GameplayStatics.h"
 #include "Player/SnakeBodyPart.h"
 
 // Sets default values
