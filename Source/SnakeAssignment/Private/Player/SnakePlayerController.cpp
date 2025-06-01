@@ -20,13 +20,16 @@ void ASnakePlayerController::SetupInputComponent()
 
 	if ( UEnhancedInputComponent* Input = Cast<UEnhancedInputComponent>( InputComponent ) )
 	{
-		Input->BindAction( MoveAction, ETriggerEvent::Triggered, this, &ASnakePlayerController::Move );
+		Input->BindAction( MoveAction, ETriggerEvent::Started, this, &ASnakePlayerController::Move );
 	}
 }
 
 void ASnakePlayerController::Move( const FInputActionValue& Value )
 {
-	ASnakePawn2* SnakePawn = Cast<ASnakePawn2>( GetPawn() );
+	if (ASnakePawn2* SnakePawn = Cast<ASnakePawn2>( GetPawn() ))
+	{
+		SnakePawn->SetNextDirection( ESnakeDirection::Up );
+	}
 }
 
 void ASnakePlayerController::InitializeInput()

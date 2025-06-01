@@ -40,6 +40,9 @@ public:
 
 	FORCEINLINE float GetSnakeSpeed() const { return SnakePlayerState->GetSnakeSpeed(); }
 
+	UFUNCTION( BlueprintCallable )
+	void SetNextDirection( ESnakeDirection NewDirection );
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -51,9 +54,6 @@ private:
 	UFUNCTION( BlueprintCallable )
 	void Jump();
 
-	UFUNCTION( BlueprintCallable )
-	void SetNextDirection( ESnakeDirection NewDirection );
-
 	UFUNCTION()
 	void UpdateDirection();
 
@@ -61,7 +61,7 @@ private:
 	void UpdateMovement( const float DeltaTime );
 
 	UFUNCTION()
-	void MoveSnake( float Distance );
+	void MoveSnake( const float Distance );
 
 	UFUNCTION()
 	void UpdateFalling( const float DeltaTime );

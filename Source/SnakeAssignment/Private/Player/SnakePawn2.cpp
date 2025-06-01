@@ -131,7 +131,7 @@ void ASnakePawn2::UpdateMovement( const float DeltaTime )
 	}
 }
 
-void ASnakePawn2::MoveSnake( float Distance )
+void ASnakePawn2::MoveSnake( const float Distance )
 {
 	FVector Position = GetActorLocation();
 	switch ( Direction )

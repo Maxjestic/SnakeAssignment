@@ -11,7 +11,7 @@
 ASnakeWorld::ASnakeWorld()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	SceneComponent = CreateDefaultSubobject<USceneComponent>( TEXT( "SceneComponent" ) );
 	SetRootComponent( SceneComponent );
@@ -61,7 +61,7 @@ void ASnakeWorld::OnConstruction( const FTransform& Transform )
 		for ( int x = 0; x < Line.Len(); x++ )
 		{
 			FTransform Offset = FTransform( FRotator::ZeroRotator,
-			                                FVector( -y * 100.f, x * 100.f, 0.f ) );
+			                                FVector( -y * 100.f, x * 100.f, -50.f ) );
 
 			switch ( Line[x] )
 			{
