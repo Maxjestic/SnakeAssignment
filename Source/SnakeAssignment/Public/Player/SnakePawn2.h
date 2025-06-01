@@ -84,7 +84,7 @@ private:
 	UPROPERTY()
 	TArray<ESnakeDirection> DirectionsQueue;
 
-	int TmpMovementMade = 0;
+	int32 TmpMovementMade = 0;
 
 	UPROPERTY()
 	TObjectPtr<ASnakeBodyPart> ChildBodyPart;
