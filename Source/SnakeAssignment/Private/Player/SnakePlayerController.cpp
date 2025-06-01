@@ -5,7 +5,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "Player/SnakePawn2.h"
+#include "Player/SnakePawn.h"
 
 void ASnakePlayerController::BeginPlay()
 {
@@ -20,13 +20,13 @@ void ASnakePlayerController::SetupInputComponent()
 
 	if ( UEnhancedInputComponent* Input = Cast<UEnhancedInputComponent>( InputComponent ) )
 	{
-		Input->BindAction( MoveAction, ETriggerEvent::Started, this, &ASnakePlayerController::Move );
+		Input->BindAction( MoveAction, ETriggerEvent::Triggered, this, &ASnakePlayerController::Move );
 	}
 }
 
 void ASnakePlayerController::Move( const FInputActionValue& Value )
 {
-	if (ASnakePawn2* SnakePawn = Cast<ASnakePawn2>( GetPawn() ))
+	if (ASnakePawn* SnakePawn = Cast<ASnakePawn>( GetPawn() ))
 	{
 		SnakePawn->SetNextDirection( ESnakeDirection::Up );
 	}

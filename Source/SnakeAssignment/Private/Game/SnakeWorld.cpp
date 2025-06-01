@@ -2,10 +2,6 @@
 
 #include "Game/SnakeWorld.h"
 #include "Components/InstancedStaticMeshComponent.h"
-#include "GameFramework/PlayerStart.h"
-#include "Player/SnakePawn.h"
-#include "SnakeAssignment/Definitions.h"
-#include "StructUtils/PropertyBag.h"
 
 // Sets default values
 ASnakeWorld::ASnakeWorld()

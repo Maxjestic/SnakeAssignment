@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "SnakeBodyPart.generated.h"
 
-class ASnakePawn2;
+class ASnakePawn;
 class USphereComponent;
 
 UCLASS()
@@ -42,7 +42,7 @@ private:
 	TObjectPtr<ASnakeBodyPart> ChildBodyPart;
 
 	UPROPERTY()
-	TObjectPtr<ASnakePawn2> SnakeOwner;
+	TObjectPtr<ASnakePawn> SnakeOwner;
 
 	FVector NextPosition = FVector::ZeroVector;
 };

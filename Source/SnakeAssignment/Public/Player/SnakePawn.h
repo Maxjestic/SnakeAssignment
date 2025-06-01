@@ -3,11 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Game/SnakePlayerState.h"
 #include "GameFramework/Pawn.h"
+#include "SnakeAssignment/Definitions.h"
 #include "SnakePawn.generated.h"
 
-class UCameraComponent;
-class USpringArmComponent;
+class ASnakePlayerState;
+class ASnakeBodyPart;
 class USphereComponent;
 
 UCLASS()
@@ -16,39 +18,77 @@ class SNAKEASSIGNMENT_API ASnakePawn : public APawn
 	GENERATED_BODY()
 
 public:
-	/** Default constructor */
+	// Sets default values for this pawn's properties
 	ASnakePawn();
 
-	//~ Begin AActor Interface
+	// Called every frame
 	virtual void Tick( float DeltaTime ) override;
-	//~ End AActor Interface
 
-	//~ Begin APawn Interface
+	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent( UInputComponent* PlayerInputComponent ) override;
-	//~ End APawn Interface
+
+	virtual void PossessedBy( AController* NewController ) override;
+
+	UPROPERTY( VisibleAnywhere )
+	TObjectPtr<USceneComponent> SceneComponent;
+
+	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
+	TObjectPtr<USphereComponent> CollisionComponent;
+
+	UPROPERTY( EditDefaultsOnly )
+	TSubclassOf<ASnakeBodyPart> SnakeBodyPartClass;
+
+	FORCEINLINE float GetSnakeSpeed() const { return SnakePlayerState->GetSnakeSpeed(); }
+
+	UFUNCTION( BlueprintCallable )
+	void SetNextDirection( ESnakeDirection NewDirection );
 
 protected:
-	//~ Begin AActor Interface
+	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	//~ End AActor Interface
 
-	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
-	TObjectPtr<USphereComponent> CollisionSphere;
-
-	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
-	TObjectPtr<USpringArmComponent> SpringArm;
-
-	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
-	TObjectPtr<UCameraComponent> Camera;
-	
-	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
-	TObjectPtr<UStaticMeshComponent> MeshHead;
-
-	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
-	TObjectPtr<UStaticMeshComponent> MeshEyeR;
-
-	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
-	TObjectPtr<UStaticMeshComponent> MeshEyeL;
+	UPROPERTY( BlueprintReadWrite )
+	FRotator ForwardRotation = FRotator::ZeroRotator;
 
 private:
+	UFUNCTION( BlueprintCallable )
+	void Jump();
+
+	UFUNCTION()
+	void UpdateDirection();
+
+	UFUNCTION()
+	void UpdateMovement( const float DeltaTime );
+
+	UFUNCTION()
+	void MoveSnake( const float Distance );
+
+	UFUNCTION()
+	void UpdateFalling( const float DeltaTime );
+
+	UFUNCTION()
+	void AteApple();
+
+	UPROPERTY( VisibleAnywhere )
+	float VelocityZ = 0.f;
+
+	UPROPERTY( VisibleAnywhere )
+	bool bInAir = false;
+
+	UPROPERTY( VisibleAnywhere )
+	ESnakeDirection Direction = ESnakeDirection::None;
+
+	UPROPERTY()
+	float MovedTileDistance = 0.f;
+
+	UPROPERTY()
+	TArray<ESnakeDirection> DirectionsQueue;
+
+	int32 TmpMovementMade = 0;
+
+	UPROPERTY()
+	TObjectPtr<ASnakeBodyPart> ChildBodyPart;
+
+	UPROPERTY()
+	TObjectPtr<ASnakePlayerState> SnakePlayerState;
 };

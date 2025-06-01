@@ -4,7 +4,7 @@
 #include "Player/SnakeBodyPart.h"
 
 #include "Components/SphereComponent.h"
-#include "Player/SnakePawn2.h"
+#include "Player/SnakePawn.h"
 
 // Sets default values
 ASnakeBodyPart::ASnakeBodyPart()
@@ -24,7 +24,7 @@ void ASnakeBodyPart::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SnakeOwner = GetOwner<ASnakePawn2>();
+	SnakeOwner = GetOwner<ASnakePawn>();
 	check( SnakeOwner );
 }
 
