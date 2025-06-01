@@ -6,6 +6,11 @@
 #include "Game/SnakeGameMode.h"
 #include "Kismet/GameplayStatics.h"
 
+void ASnakePlayerState::SetControllerType( const ESnakeControllerType NewControllerType )
+{
+	ControllerType = NewControllerType;
+}
+
 void ASnakePlayerState::IncreaseSnakeSpeed( const float ExtraSpeed )
 {
 	SnakeSpeed += ExtraSpeed;

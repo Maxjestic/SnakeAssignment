@@ -6,6 +6,14 @@
 #include "GameFramework/PlayerState.h"
 #include "SnakePlayerState.generated.h"
 
+UENUM()
+enum class ESnakeControllerType : uint8
+{
+	Keyboard1,
+	Keyboard2,
+	AI
+};
+
 /**
  * 
  */
@@ -18,6 +26,12 @@ public:
 	UFUNCTION()
 	FORCEINLINE float GetSnakeSpeed() const { return SnakeSpeed; }
 
+	UFUNCTION( Blueprintcallable )
+	FORCEINLINE ESnakeControllerType GetControllerType() const { return ControllerType; }
+
+	UFUNCTION( BlueprintCallable )
+	void SetControllerType( const ESnakeControllerType NewControllerType );
+
 	UFUNCTION()
 	void IncreaseSnakeSpeed( const float ExtraSpeed );
 
@@ -28,5 +42,8 @@ protected:
 	UPROPERTY( EditAnywhere )
 	float SnakeSpeed = 500.f;
 
-	int ApplesEaten = 0;
+	int32 ApplesEaten = 0;
+
+	UPROPERTY()
+	ESnakeControllerType ControllerType = ESnakeControllerType::AI;
 };
