@@ -8,6 +8,12 @@ void UGameDataSubsystem::SetNumPlayers( const int NewNumPlayers )
 	NumPlayers = NewNumPlayers;
 
 	SnakeControllerTypes.SetNum( NumPlayers );
+
+	// Temp code
+	for (int i  = 0; i < NumPlayers; i++)
+	{
+		SnakeControllerTypes[i] = i == 0 ? ESnakeControllerType::Keyboard1 : ESnakeControllerType::Keyboard2;
+	}
 }
 
 bool UGameDataSubsystem::GetPlayerControllerType( const int32 Index, ESnakeControllerType& OutControllerType ) const
