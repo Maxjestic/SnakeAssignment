@@ -59,6 +59,8 @@ void ASnakePawn::Jump()
 
 void ASnakePawn::SetNextDirection( const ESnakeDirection NewDirection )
 {
+	DirectionsQueue.Empty();
+
 	DirectionsQueue.Add( NewDirection );
 }
 

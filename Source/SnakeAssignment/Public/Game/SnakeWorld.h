@@ -32,6 +32,15 @@ public:
 	UPROPERTY( EditDefaultsOnly )
 	TSubclassOf<AActor> DoorActor;
 
+	UFUNCTION( BlueprintCallable)
+	FORCEINLINE int32 GetLevelWidth() const { return LevelWidth; }
+
+	UFUNCTION( BlueprintCallable)
+	FORCEINLINE int32 GetLevelHeight() const { return LevelHeight; }
+
+	UFUNCTION( BlueprintCallable )
+	bool IsWall( const int32 InX, const int32 InY );
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -39,4 +48,13 @@ protected:
 private:
 	UPROPERTY()
 	TArray<AActor*> Actors;
+
+	UPROPERTY()
+	int32 LevelWidth = 0;
+	
+	UPROPERTY()
+	int32 LevelHeight = 0;
+	
+	UPROPERTY()
+	TArray<bool> LevelGrid;
 };

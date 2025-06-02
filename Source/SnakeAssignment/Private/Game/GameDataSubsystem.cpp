@@ -12,6 +12,12 @@ void UGameDataSubsystem::SetNumPlayers( const int NewNumPlayers )
 	// Temp code
 	for (int i  = 0; i < NumPlayers; i++)
 	{
+		if (i > 1)
+		{
+			SnakeControllerTypes[i] = ESnakeControllerType::AI;
+			continue;
+		}
+		
 		SnakeControllerTypes[i] = i == 0 ? ESnakeControllerType::Keyboard1 : ESnakeControllerType::Keyboard2;
 	}
 }

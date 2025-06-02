@@ -162,7 +162,7 @@ ASnakePawn* ASnakePlayerController::GetSnakePawnUsingKeyboard( const int Keyboar
 	{
 		if (const ASnakePlayerController* SnakePlayerController = Cast<ASnakePlayerController>( Actor ))
 		{
-			ESnakeControllerType SnakeControllerType = SnakePlayerController->SnakePlayerState->GetControllerType();
+			const ESnakeControllerType SnakeControllerType = SnakePlayerController->SnakePlayerState->GetControllerType();
 			if (SnakeControllerType == ESnakeControllerType::Keyboard1 && KeyboardId == 1 ||
 				SnakeControllerType == ESnakeControllerType::Keyboard2 && KeyboardId == 2)
 			{
