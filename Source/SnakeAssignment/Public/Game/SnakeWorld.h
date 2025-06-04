@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "SnakeWorld.generated.h"
 
+class AApple;
+
 UCLASS()
 class SNAKEASSIGNMENT_API ASnakeWorld : public AActor
 {
@@ -18,7 +20,7 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaTime ) override;
 
-	virtual void OnConstruction(const FTransform& Transform) override;
+	virtual void OnConstruction( const FTransform& Transform ) override;
 
 	UPROPERTY( VisibleAnywhere )
 	TObjectPtr<USceneComponent> SceneComponent;
@@ -32,29 +34,30 @@ public:
 	UPROPERTY( EditDefaultsOnly )
 	TSubclassOf<AActor> DoorActor;
 
-	UFUNCTION( BlueprintCallable)
+	UFUNCTION( BlueprintCallable )
 	FORCEINLINE int32 GetLevelWidth() const { return LevelWidth; }
 
-	UFUNCTION( BlueprintCallable)
+	UFUNCTION( BlueprintCallable )
 	FORCEINLINE int32 GetLevelHeight() const { return LevelHeight; }
 
 	UFUNCTION( BlueprintCallable )
 	bool IsWall( const int32 InX, const int32 InY );
-	
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-private:
+private:	
 	UPROPERTY()
 	TArray<AActor*> Actors;
 
 	UPROPERTY()
 	int32 LevelWidth = 0;
-	
+
 	UPROPERTY()
 	int32 LevelHeight = 0;
-	
+
 	UPROPERTY()
 	TArray<bool> LevelGrid;
+	
 };

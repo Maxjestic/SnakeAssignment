@@ -25,13 +25,14 @@ bool ASnakeWorld::IsWall( const int32 InX, const int32 InY )
 	{
 		return false;
 	}
-	return LevelGrid[InY * LevelWidth + InX];
+	return LevelGrid[InX * LevelWidth + InY];
 }
 
 // Called when the game starts or when spawned
 void ASnakeWorld::BeginPlay()
 {
 	Super::BeginPlay();
+	
 }
 
 // Called every frame
@@ -60,21 +61,21 @@ void ASnakeWorld::OnConstruction( const FTransform& Transform )
 		return;
 	}
 
-	LevelHeight = Lines.Num();
-	LevelWidth = Lines[0].Len();
+	LevelHeight = Lines.Num() - 2;
+	LevelWidth = Lines[0].Len() - 2;
 	LevelGrid.Empty();
 	LevelGrid.Reserve( LevelHeight * LevelWidth );
 	
-	int y = 0;
+	int32 x = 0;
 	for ( const FString& Line : Lines )
 	{
-		for ( int x = 0; x < Line.Len(); x++ )
+		for ( int32 y = 0; y < Line.Len(); y++ )
 		{
 			FTransform Offset = FTransform( FRotator::ZeroRotator,
-			                                FVector( -y * 100.f, x * 100.f, -50.f ) );
+			                                FVector( -x * 100.f, y * 100.f, -50.f ) );
 
 			bool bWall = false;
-			switch ( Line[x] )
+			switch ( Line[y] )
 			{
 			case '#':
 				WallMeshInstances->AddInstance( Offset );
@@ -100,6 +101,6 @@ void ASnakeWorld::OnConstruction( const FTransform& Transform )
 			}
 			LevelGrid.Add( bWall );
 		}
-		y++;
+		x++;
 	}
 }

@@ -42,6 +42,9 @@ public:
 
 	UFUNCTION( BlueprintCallable )
 	void SetNextDirection( ESnakeDirection NewDirection );
+	
+	UFUNCTION( )
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 protected:
 	// Called when the game starts or when spawned
@@ -83,8 +86,6 @@ private:
 
 	UPROPERTY()
 	TArray<ESnakeDirection> DirectionsQueue;
-
-	int32 TmpMovementMade = 0;
 
 	UPROPERTY()
 	TObjectPtr<ASnakeBodyPart> ChildBodyPart;

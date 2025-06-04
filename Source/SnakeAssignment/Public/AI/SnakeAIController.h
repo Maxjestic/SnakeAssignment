@@ -19,6 +19,9 @@ class SNAKEASSIGNMENT_API ASnakeAIController : public APlayerController
 	
 public:
 	virtual void Tick(float DeltaSeconds) override;
+
+	UFUNCTION()
+	void ResetAppleXY(const int32 NewX, const int32 NewY);
 	
 protected:
 	virtual void BeginPlay() override;
@@ -34,4 +37,8 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<ASnakeWorld> SnakeWorld;
+	
+private:
+	int32 AppleX;
+	int32 AppleY;
 };
