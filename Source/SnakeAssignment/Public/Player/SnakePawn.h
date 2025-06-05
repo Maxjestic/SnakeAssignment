@@ -42,10 +42,14 @@ public:
 
 	UFUNCTION( BlueprintCallable )
 	void SetNextDirection( ESnakeDirection NewDirection );
-	
+
 	UFUNCTION( )
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	FORCEINLINE bool IsStopped() const {return bIsStopped;}
+
+	void StopSnake();
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -72,11 +76,15 @@ private:
 	UFUNCTION()
 	void AteApple();
 
+	void Death();
+	
 	UPROPERTY( VisibleAnywhere )
 	float VelocityZ = 0.f;
 
 	UPROPERTY( VisibleAnywhere )
 	bool bInAir = false;
+
+	bool bIsStopped = false;
 
 	UPROPERTY( VisibleAnywhere )
 	ESnakeDirection Direction = ESnakeDirection::None;

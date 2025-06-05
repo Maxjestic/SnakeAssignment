@@ -47,7 +47,13 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-private:	
+	UPROPERTY( EditAnywhere, Category="Level" )
+	FString LevelName = TEXT( "/Levels/Level1.txt" );
+
+	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category="Level" )
+	int32 Level = 0;
+
+private:
 	UPROPERTY()
 	TArray<AActor*> Actors;
 
@@ -59,5 +65,4 @@ private:
 
 	UPROPERTY()
 	TArray<bool> LevelGrid;
-	
 };

@@ -48,7 +48,6 @@ void AApple::Relocate()
 		X = FMath::RandRange( 0, WorldHeight );
 		Y = FMath::RandRange( 0, WorldWidth );
 	}
-	UE_LOG(LogTemp,Display,TEXT("X = %d,Y = %d\n"),X,Y);
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation( GetWorld(), EatVfx, GetActorLocation() );
 	UGameplayStatics::PlaySoundAtLocation( this, EatSfx, GetActorLocation() );
 	SetActorLocation( FVector( -X * TileSize, Y * TileSize, GetActorLocation().Z ) );

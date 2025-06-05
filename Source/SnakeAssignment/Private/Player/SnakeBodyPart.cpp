@@ -32,12 +32,17 @@ void ASnakeBodyPart::BeginPlay()
 void ASnakeBodyPart::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-	
+
+	if ( bIsStopped )
+	{
+		return;
+	}
+
 	if ( NextPosition != FVector::ZeroVector )
 	{
 		const float Speed = SnakeOwner->GetSnakeSpeed();
 		FVector Position = GetActorLocation();
-		const FVector Forward = (NextPosition - Position).GetSafeNormal();
+		const FVector Forward = ( NextPosition - Position ).GetSafeNormal();
 		Position += Forward * Speed * DeltaTime;
 		SetActorLocation( Position );
 	}
@@ -64,4 +69,15 @@ void ASnakeBodyPart::SetNextPosition( const FVector& InPosition )
 	}
 
 	NextPosition = InPosition;
+}
+
+void ASnakeBodyPart::StopMovement()
+{
+	if ( IsValid( ChildBodyPart ) )
+	{
+		ChildBodyPart->StopMovement();
+	}
+
+	NextPosition = FVector::ZeroVector;
+	bIsStopped = true;
 }

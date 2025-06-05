@@ -27,6 +27,8 @@ public:
 	UFUNCTION()
 	void SetNextPosition( const FVector& InPosition );
 
+	void StopMovement();
+
 	UPROPERTY( VisibleAnywhere )
 	TObjectPtr<USceneComponent> SceneComponent;
 
@@ -45,4 +47,6 @@ private:
 	TObjectPtr<ASnakePawn> SnakeOwner;
 
 	FVector NextPosition = FVector::ZeroVector;
+
+	bool bIsStopped = false;
 };

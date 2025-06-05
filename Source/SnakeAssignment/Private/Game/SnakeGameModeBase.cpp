@@ -18,6 +18,41 @@ APlayerController* ASnakeGameModeBase::SpawnPlayerController( ENetRole InRemoteR
 	{
 		return GetWorld()->SpawnActor<APlayerController>(ASnakeAIController::StaticClass());
 	}
+	else
+	{
+		NumberOfPlayers++;
+	}
 	
 	return Super::SpawnPlayerController( InRemoteRole, Options );	
+}
+
+void ASnakeGameModeBase::AppleAte()
+{
+	ApplesEatenSoFar++;
+	CheckForGameOver();
+}
+
+void ASnakeGameModeBase::PlayerDied()
+{
+	NumberOfPlayers--;
+	CheckForGameOver();
+}
+
+void ASnakeGameModeBase::CheckForGameOver()
+{
+	if (WinConditionMet())
+	{
+		const ASnakeGameState* SnakeGameState = GetGameState<ASnakeGameState>();
+		for ( const TObjectPtr<ASnakePlayerState> SnakePlayerState : SnakeGameState->GetAliveSnakes() )
+		{
+			SnakePlayerState->StopSnake();
+		}
+		OnGameOver();
+	}
+}
+
+
+bool ASnakeGameModeBase::WinConditionMet() const
+{
+	return ApplesEatenSoFar >= ApplesAmount || NumberOfPlayers == 0;
 }

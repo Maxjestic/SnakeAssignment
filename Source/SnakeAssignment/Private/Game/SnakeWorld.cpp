@@ -53,7 +53,7 @@ void ASnakeWorld::OnConstruction( const FTransform& Transform )
 	}
 	Actors.Empty();
 
-	const FString FilePath = FPaths::ProjectDir() + TEXT( "/Levels/Level1.txt" );
+	const FString FilePath = FPaths::ProjectDir() + LevelName;
 	TArray<FString> Lines;
 
 	if ( !FFileHelper::LoadFileToStringArray( Lines, *FilePath ) )

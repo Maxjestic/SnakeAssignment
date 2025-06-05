@@ -33,6 +33,11 @@ void ASnakePawn::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
+	if (bIsStopped)
+	{
+		return;
+	}
+	
 	UpdateFalling( DeltaTime );
 	UpdateMovement( DeltaTime );
 }
@@ -76,7 +81,7 @@ void ASnakePawn::OnOverlapBegin( UPrimitiveComponent* OverlappedComp, AActor* Ot
 		return;
 	}
 
-	UE_LOG(LogTemp, Error, TEXT("Died"));
+	Death();
 }
 
 void ASnakePawn::UpdateDirection()
@@ -215,4 +220,25 @@ void ASnakePawn::AteApple()
 	}
 
 	SnakePlayerState->AppleEaten();
+}
+
+void ASnakePawn::Death()
+{
+	UE_LOG( LogTemp, Warning, TEXT( "Died" ) );
+
+	StopSnake();
+	
+	SnakePlayerState->Died();
+}
+
+void ASnakePawn::StopSnake()
+{
+	if (IsValid( ChildBodyPart ) )
+	{
+		ChildBodyPart->StopMovement();
+	}
+
+	bIsStopped = true;
+	DirectionsQueue.Empty();
+	Direction = ESnakeDirection::None;
 }

@@ -6,6 +6,8 @@
 #include "GameFramework/GameStateBase.h"
 #include "SnakeGameState.generated.h"
 
+class ASnakePlayerState;
+
 UENUM( BlueprintType )
 enum class ESnakeGameMode : uint8
 {
@@ -27,6 +29,10 @@ public:
 
 	UFUNCTION( BlueprintCallable )
 	void SetSnakePlayMode( const ESnakeGameMode NewSnakePlayMode );
+
+	TArray<TObjectPtr<ASnakePlayerState>> GetAliveSnakes() const;
+
+	TArray<TObjectPtr<ASnakePlayerState>> GetAllSnakes() const;
 
 private:
 	ESnakeGameMode SnakeGameMode = ESnakeGameMode::Cooperative;

@@ -54,6 +54,11 @@ void ASnakeAIController::Tick( float DeltaSeconds )
 {
 	Super::Tick( DeltaSeconds );
 
+	if ( SnakePawn != nullptr && SnakePawn->IsStopped() )
+	{
+		return;
+	}
+	
 	if ( !IsValid( SnakePawn ) || !IsValid( SnakeWorld ) )
 	{
 		return;
@@ -93,11 +98,6 @@ ESnakeDirection ASnakeAIController::FindTheBestDirection() const
 
 	for ( int32 Direction = 0; Direction < 4; Direction++ )
 	{
-		UE_LOG( LogTemp,
-		        Warning,
-		        TEXT( "X: %d, Y: %d" ),
-		        X + Directions[Direction * 2],
-		        Y + Directions[Direction * 2 + 1] );
 		const int32 Rating = RateTile( X + Directions[Direction * 2], Y + Directions[Direction * 2 + 1] );
 		if ( BestDirection == ESnakeDirection::None || Rating < LowestRating )
 		{

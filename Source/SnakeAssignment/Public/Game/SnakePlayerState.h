@@ -9,9 +9,9 @@
 UENUM()
 enum class ESnakeControllerType : uint8
 {
-	Keyboard1,
-	Keyboard2,
-	AI
+	Keyboard1	UMETA(DisplayName = "Keyboard 1"),
+	Keyboard2	UMETA(DisplayName = "Keyboard 2"),
+	AI			UMETA(DisplayName = "AI")
 };
 
 /**
@@ -36,13 +36,23 @@ public:
 	void IncreaseSnakeSpeed( const float ExtraSpeed );
 
 	UFUNCTION()
-	FORCEINLINE void AppleEaten();
+	void AppleEaten();
 
+	FORCEINLINE bool IsDead() const { return bIsDead; };
+	
+	FORCEINLINE int32 AppleScore() const { return ApplesEaten; };
+
+	void Died();
+
+	void StopSnake() const;
+	
 protected:
 	UPROPERTY( EditAnywhere )
 	float SnakeSpeed = 500.f;
 
 	int32 ApplesEaten = 0;
+
+	bool bIsDead = false;
 
 	UPROPERTY()
 	ESnakeControllerType ControllerType = ESnakeControllerType::AI;

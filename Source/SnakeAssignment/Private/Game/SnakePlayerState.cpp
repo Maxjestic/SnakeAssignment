@@ -3,8 +3,9 @@
 
 #include "Game/SnakePlayerState.h"
 
-#include "Game/SnakeGameMode.h"
+#include "Game/SnakeGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "Player/SnakePawn.h"
 
 void ASnakePlayerState::SetControllerType( const ESnakeControllerType NewControllerType )
 {
@@ -20,8 +21,30 @@ void ASnakePlayerState::AppleEaten()
 {
 	ApplesEaten++;	
 
-	if ( const ASnakeGameMode* GameMode = Cast<ASnakeGameMode>( UGameplayStatics::GetGameMode( GetWorld() ) ))
+	if ( ASnakeGameModeBase* GameMode = Cast<ASnakeGameModeBase>( UGameplayStatics::GetGameMode( GetWorld() ) ))
 	{
-		GameMode->AppleEaten(this);
+		GameMode->AppleAte();
+	}
+}
+
+void ASnakePlayerState::Died()
+{
+	bIsDead = true;
+	if (ControllerType == ESnakeControllerType::AI)
+	{
+		return;
+	}
+	
+	if ( ASnakeGameModeBase* GameMode = Cast<ASnakeGameModeBase>( UGameplayStatics::GetGameMode( GetWorld() ) ))
+	{
+		GameMode->PlayerDied();
+	}
+}
+
+void ASnakePlayerState::StopSnake() const
+{
+	if (ASnakePawn* SnakePawn = GetPawn<ASnakePawn>())
+	{
+		SnakePawn->StopSnake();
 	}
 }
